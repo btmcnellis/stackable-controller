@@ -1,7 +1,7 @@
 package controllers.stack
 
 import play.api.mvc.{Result, Controller}
-import jp.t2v.lab.play2.stackc.{RequestWithAttributes, StackableController}
+import com.jaroop.play.stackc.{RequestWithAttributes, StackableController}
 import play.api.Logger
 
 trait LoggingElement extends StackableController {
@@ -15,4 +15,3 @@ trait LoggingElement extends StackableController {
   }
 
 }
-

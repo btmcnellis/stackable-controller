@@ -1,5 +1,5 @@
 val commonSettings = Seq(
-  organization := "jp.t2v",
+  organization := "com.jaroop",
   version := "0.7.0-SNAPSHOT",
   scalaVersion := "2.11.11",
   crossScalaVersions := scalaVersion.value :: Nil,

@@ -1,4 +1,4 @@
-package jp.t2v.lab.play2.stackc
+package com.jaroop.play.stackc
 
 import play.api.mvc._
 import scala.collection.concurrent.TrieMap
@@ -75,4 +75,3 @@ class RequestWithAttributes[A](underlying: Request[A], attributes: TrieMap[Reque
   }
 
 }
-

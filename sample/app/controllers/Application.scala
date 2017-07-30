@@ -4,10 +4,10 @@ import play.api.mvc._
 import models._
 import views._
 import controllers.stack._
-import jp.t2v.lab.play2.stackc.RequestWithAttributes
+import com.jaroop.play.stackc.RequestWithAttributes
 
 object Application extends Controller with DBSessionElement with LoggingElement {
-  
+
   def index = Action {
     Ok(views.html.index("Your new application is ready."))
   }

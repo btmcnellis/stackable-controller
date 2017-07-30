@@ -46,7 +46,7 @@ def PjaxAction(authority: Authority)(f: Template => User => DBSession => Request
 ```
 
 ```scala
-def index = PjaxAction(NormalUser) { template => user => session => request => 
+def index = PjaxAction(NormalUser) { template => user => session => request =>
   val messages = Message.findAll(session)
   Ok(views.hrml.index(messages)(template))
 }
@@ -151,7 +151,7 @@ As an alternative, this module offers Composable Action composition using the po
 
     ```scala
     object NoAuthController extends Controller with PjaxElement with DBSessionElement {
-      
+
       def messages = StackAction { implicit req =>
         val messages = Message.findAll
         Ok(html.messages(messages)(GuestUser)(template))
@@ -170,7 +170,7 @@ As an alternative, this module offers Composable Action composition using the po
 Add a dependency declaration into your Build.scala or build.sbt file:
 
 ```scala
-libraryDependencies += "jp.t2v" %% "stackable-controller" % "0.6.0"
+libraryDependencies += "com.jaroop" %% "stackable-controller" % "0.6.0"
 ```
 
 - for Play2.2.x, use 0.3.0
@@ -193,7 +193,7 @@ So, users of your StackElement can customize `ExecutionContext`.
       override def proceed[A](req: RequestWithAttributes[A])(f: RequestWithAttributes[A] => Future[Result]): Future[Result] = {
         val ctx: ExecutionContext = StackActionExecutionContext(req)
         val future: Future[Foo] = getFooAsynchronously(ctx)
-        future flatMap { 
+        future flatMap {
           foo => super.proceed(req.set(FooKey, foo))(f)
         } recoverWith {
           _ => super.proceed(req)(f)

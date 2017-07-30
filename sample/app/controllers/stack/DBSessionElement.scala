@@ -2,7 +2,7 @@ package controllers.stack
 
 import play.api.mvc.{Result, Controller}
 import scalikejdbc._
-import jp.t2v.lab.play2.stackc.{RequestWithAttributes, RequestAttributeKey, StackableController}
+import com.jaroop.play.stackc.{RequestWithAttributes, RequestAttributeKey, StackableController}
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
