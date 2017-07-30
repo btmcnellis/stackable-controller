@@ -1,11 +1,10 @@
 package controllers.stack
 
-import play.api.mvc.{Result, Controller}
-import com.jaroop.play.stackc.{RequestWithAttributes, StackableController}
+import com.jaroop.play.stackc.{ RequestWithAttributes, StackableController }
 import play.api.Logger
+import play.api.mvc.{ BaseController, Result }
 
-trait LoggingElement extends StackableController {
-    self: Controller =>
+trait LoggingElement extends StackableController { self: BaseController =>
 
   override def cleanupOnSucceeded[A](req: RequestWithAttributes[A], res: Option[Result]): Unit = {
       res.map { result =>

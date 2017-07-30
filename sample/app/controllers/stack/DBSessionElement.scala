@@ -1,13 +1,12 @@
 package controllers.stack
 
-import play.api.mvc.{Result, Controller}
-import scalikejdbc._
-import com.jaroop.play.stackc.{RequestWithAttributes, RequestAttributeKey, StackableController}
+import com.jaroop.play.stackc.{ RequestAttributeKey, RequestWithAttributes, StackableController }
+import play.api.mvc.{ BaseController, Result }
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scalikejdbc._
 
-trait DBSessionElement extends StackableController {
-    self: Controller =>
+trait DBSessionElement extends StackableController { self: BaseController =>
 
   case object DBSessionKey extends RequestAttributeKey[DBSession]
 
