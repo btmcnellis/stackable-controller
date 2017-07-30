@@ -1,7 +1,7 @@
 package controllers.stack
 
 import com.jaroop.play.stackc.{ RequestAttributeKey, RequestWithAttributes, StackableController }
-import play.api.mvc.{ BaseController, Result }
+import play.api.mvc.{ BaseController, Request, Result }
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import scalikejdbc._
@@ -17,6 +17,6 @@ trait DBSessionElement extends StackableController { self: BaseController =>
     }
   }
 
-  implicit def dbSession[A](implicit req: RequestWithAttributes[A]): DBSession = req.get(DBSessionKey).get // throw
+  implicit def dbSession[A](implicit req: Request[A]): DBSession = req.attrs(DBSessionKey)
 
 }
