@@ -33,20 +33,12 @@ trait StackableController { self: BaseController =>
   final def StackAction(params: TypedEntry[_]*)(f: Request[AnyContent] => Result): Action[AnyContent] = new StackActionBuilder(parse.default, params: _*).apply(f)
   final def StackAction(f: Request[AnyContent] => Result): Action[AnyContent] = new StackActionBuilder(parse.default).apply(f)
 
-  @deprecated("Replace RequestWithAttributes with play.api.mvc.Request.", "0.8.0")
-  def proceed[A](request: RequestWithAttributes[A])(f: RequestWithAttributes[A] => Future[Result]): Future[Result] = f(request)
   def proceed[A](request: Request[A])(f: Request[A] => Future[Result]): Future[Result] = f(request)
 
-  @deprecated("Replace RequestWithAttributes with play.api.mvc.Request.", "0.8.0")
-  def cleanupOnSucceeded[A](request: RequestWithAttributes[A], result: Option[Result]): Unit = cleanupOnSucceeded(request)
   def cleanupOnSucceeded[A](request: Request[A], result: Option[Result]): Unit = cleanupOnSucceeded(request)
 
-  @deprecated("Replace RequestWithAttributes with play.api.mvc.Request.", "0.8.0")
-  def cleanupOnSucceeded[A](request: RequestWithAttributes[A]): Unit = ()
   def cleanupOnSucceeded[A](request: Request[A]): Unit = ()
 
-  @deprecated("Replace RequestWithAttributes with play.api.mvc.Request.", "0.8.0")
-  def cleanupOnFailed[A](request: RequestWithAttributes[A], e: Throwable): Unit = ()
   def cleanupOnFailed[A](request: Request[A], e: Throwable): Unit = ()
 
   private def cleanup[A](request: Request[A], result: Future[Result])(implicit ctx: ExecutionContext): Future[Result] = result andThen {
@@ -80,7 +72,9 @@ case class Attribute[A](key: RequestAttributeKey[A], value: A) {
 @deprecated("Migrate to play.api.mvc.Request, which supports typed attributes as of Play 2.6.", "0.8.0")
 class RequestWithAttributes[A](private val underlying: Request[A]) extends WrappedRequest[A](underlying) {
 
-  def get[B](key: RequestAttributeKey[B]): Option[B] = underlying.attrs.get(TypedKey.apply[B])
+  private val keys: Map[RequestAttributeKey[_], TypedKey[_]] = Map.empty
+
+  def get[B](key: RequestAttributeKey[B]): Option[B] = keys.get(key).flatMap(tk => underlying.attrs.get(tk))
 
   def set[B](key: RequestAttributeKey[B], value: B): RequestWithAttributes[A] = {
     val newReq = underlying.addAttr(TypedKey.apply[B], value)

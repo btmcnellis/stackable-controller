@@ -10,13 +10,16 @@ trait DBSessionElement extends StackableController { self: BaseController =>
 
   case object DBSessionKey extends RequestAttributeKey[DBSession]
 
-  override def proceed[A](req: RequestWithAttributes[A])(f: RequestWithAttributes[A] => Future[Result]): Future[Result] = {
+  override def proceed[A](req: Request[A])(f: Request[A] => Future[Result]): Future[Result] = {
     import TxBoundary.Future._
     DB.localTx { session =>
-      super.proceed(req.set(DBSessionKey, session))(f)
+      super.proceed(req.addAttr(DBSessionKey, session))(f)
     }
   }
 
-  implicit def dbSession[A](implicit req: Request[A]): DBSession = req.attrs(DBSessionKey)
+  implicit def dbSession[A](implicit req: Request[A]): DBSession = {
+    play.api.Logger.error(req.attrs.toString)
+    req.attrs(DBSessionKey)
+  }
 
 }
